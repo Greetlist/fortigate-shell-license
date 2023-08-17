@@ -4,8 +4,8 @@
   - [获取root权限](#获取root权限)
 - [生成授权文件](#生成授权文件)
   - [脚本](#脚本)
+  - [配置port口](#配置port口)
   - [替换授权文件](#替换授权文件)
-  - [启动](#启动)
 
 # OverView
 软路由里面装PVE之后，需要把FortiGate虚拟机导入，并且获取FortiGate的root权限跟License
@@ -23,12 +23,16 @@
 ### 编译BusyBox
 ### 修改FortiGate /bin/init文件
 
-
 ## 生成授权文件
 ### 脚本
 借用大佬的[脚本](https://github.com/rrrrrrri/fos-license-gen/blob/main/gen_lic.py)，我们能直接生成我们自己的license文件
 
-### 替换授权文件
-导入到镜像里面之后，再把镜像放到PVE里
+### 配置port口
+这里有两篇文章
+[install fortigate in pve](https://getlabsdone.com/how-to-install-a-fortigate-firewall-on-proxmox/)
+[Fortigate Administration Guide](https://docs.fortinet.com/document/fortigate-private-cloud/7.4.0/openstack-administration-guide/3275/setting-up-the-fortigate-vm-network-configuration)
 
-### 启动
+可以跟着这个文章走一遍，就可以把port配好
+
+### 替换授权文件
+这一步需要先配置port1口的IP之后才能访问到web,访问之后会提示需不需要上传license文件。
