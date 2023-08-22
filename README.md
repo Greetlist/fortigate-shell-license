@@ -6,6 +6,12 @@
   - [脚本](#脚本)
   - [配置port口](#配置port口)
   - [替换授权文件](#替换授权文件)
+- [物理口映射](#物理口映射)
+  - [检查BIOS设置](#检查BIOS设置)
+  - [GRUB设置](#GRUB设置)
+  - [Kernel Module设置](#Kernel Module设置)
+  - [重启机器](#重启机器)
+  - [校验](#校验)
 
 # OverView
 软路由里面装PVE之后，需要把FortiGate虚拟机导入，并且获取FortiGate的root权限跟License
@@ -36,3 +42,52 @@
 
 ### 替换授权文件
 这一步需要先配置port1口的IP之后才能访问到web,访问之后会提示需不需要上传license文件。
+
+## 物理口映射
+[Arch Linux文档](https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF)
+[Proxmox文档](https://pve.proxmox.com/pve-docs/pve-admin-guide.html#qm_pci_passthrough)
+### 检查BIOS设置
+重启机器之后进入BIOS，一般配置都在CPU配置里面。不同的CPU配置选项不一样,像Intel的CPU就是VT-d，AMD的CPU就是AMD-Vi
+要设置成Enabled，不能选Auto
+
+### GRUB设置
+
+打开`/etc/default/grub`文件之后修改：
+
+```
+GRUB_CMDLINE_LINUX="intel_iommu=on iommu=pt"
+```
+
+注意！！！
+注意！！！
+注意！！！
+
+需要`update-grub`
+
+### Kernel Module设置
+
+打开 `/etc/modules`,添加
+
+```
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd
+```
+
+最后再执行
+```
+update-initramfs -u -k all
+```
+
+### 重启机器
+```
+reboot
+```
+
+### 校验
+```
+dmesg | grep -i -e DMAR -e IOMMU
+```
+如果能看到`DMAR: IOMMU enabled`,那就说明好了
+
