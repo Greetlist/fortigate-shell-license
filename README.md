@@ -12,6 +12,9 @@
   - [Kernel Module设置](#Kernel Module设置)
   - [重启机器](#重启机器)
   - [校验](#校验)
+  - [问题](#问题)
+- [PVE物理口](#PVE物理口)
+  - [加入vmbr0 + 映射进虚拟机](#加入vmbr0 + 映射进虚拟机)
 
 # OverView
 软路由里面装PVE之后，需要把FortiGate虚拟机导入，并且获取FortiGate的root权限跟License
@@ -90,4 +93,16 @@ reboot
 dmesg | grep -i -e DMAR -e IOMMU
 ```
 如果能看到`DMAR: IOMMU enabled`,那就说明好了
+
+
+### 问题
+Fortigate虚拟机里面不支持Intel 221网卡的驱动，所以这个直接映射没啥作用,还是只能把物理口先加进PVE然后在给到虚拟机
+
+## PVE物理口
+### 加入vmbr0 + 映射进虚拟机
+
+
+
+
+
 
